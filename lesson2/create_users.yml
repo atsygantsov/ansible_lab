@@ -1,0 +1,25 @@
+---
+- name: create users 
+  hosts: all
+  vars:
+    the_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62336332663639353837616631633839383563393434323331653437636332336661646337313439
+          3636333437613262613164633262303030373666346332650a366636363739666563363166333937
+          63366633343164386539393463663364353136656334383161356236363530653561396339633534
+          3866303039303636390a643239623639363562633635386164303931636165623233636265356330
+          3862
+  tasks: 
+  - name: create users 
+    user: 
+      name: "{{ item.name }}"
+      comment: "{{ item.name }}@example.com"
+      create_home: yes
+      password: "{{ the_secret | string | password_hash('sha512', 65534 | random(seed=inventory_hostname) | string) }}"
+      update_password: on_create
+      state: present
+
+    loop:
+      - name: Alice
+      - name: Bob
+      - name: Carol

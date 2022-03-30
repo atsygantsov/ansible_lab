@@ -1,0 +1,45 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - name: install the webserver
+    yum:
+      name: httpd
+      state: latest
+
+  - name: start and enable the Apache webserver
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  - name: create the index.html file in /var/www/html/
+    copy:
+      content: 'Welcome to my web server'
+      dest: /var/www/index.html
+
+  - name: install firewalld
+    yum:
+      name: firewalld
+      state: latest  
+
+  - name: start and enable the Firewalld
+    service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+  - name: open the firewall http service
+    firewalld:
+      service: http
+      state: enabled
+      immediate: yes
+
+  - name: open the firewall https service
+    firewalld:
+      service: https
+      state: enabled
+      immediate: yes
+

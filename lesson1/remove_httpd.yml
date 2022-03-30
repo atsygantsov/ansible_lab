@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - name: remove httpd package 
+    yum:
+      name: httpd  
+      state: absent
+
+
+  - name: delete the index.html file in /var/www/html/
+    file:
+      state: absent
+      dest: /var/www/index.html
+  
+
+  - name: close  the firewall http service
+    firewalld:
+      service: http
+      state: disabled
+      immediate: yes
+
+  - name: close  the firewall https service
+    firewalld:
+      service: https
+      state: disabled
+      immediate: yes
+
