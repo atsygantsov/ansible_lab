@@ -18,7 +18,7 @@
   - name: create the index.html file in /var/www/html/
     copy:
       content: 'Welcome to my web server'
-      dest: /var/www/index.html
+      dest: /var/www/html/index.html
 
   - name: install firewalld
     yum:

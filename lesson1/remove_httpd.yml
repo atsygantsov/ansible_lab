@@ -13,7 +13,7 @@
   - name: delete the index.html file in /var/www/html/
     file:
       state: absent
-      dest: /var/www/index.html
+      dest: /var/www/html/index.html
   
 
   - name: close  the firewall http service
