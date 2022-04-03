@@ -1,0 +1,4 @@
+---
+# destination file  for httpd installation
+  dst_dir: /var/www/html
+  

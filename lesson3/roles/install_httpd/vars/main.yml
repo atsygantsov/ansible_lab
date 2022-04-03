@@ -1,0 +1,5 @@
+---
+# vars file for httpd installation
+dest_dir: /var/www/html/
+
+

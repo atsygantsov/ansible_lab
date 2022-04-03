@@ -1,0 +1,65 @@
+---
+- name: install vsftpd
+  yum:
+    name: vsftpd
+    state: installed
+
+- name: start and enabled vsftpd
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: open ftp ports on firewalld
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: true
+  with_items:
+     - 21/tcp
+  notify: restart firewall
+
+
+- name: copy j2 template to  config file vsftpd.conf
+  template:
+    src: templates/vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+  notify: restart vsftpd
+
+- name: install required SElinux tools
+  yum:
+    name: policycoreutils-python
+    state: present
+
+
+- name: "create anon user dir {{ anon_root }}"
+  file:
+    path: "{{ anon_root }}"
+    state: directory
+    mode: 0755
+
+
+- name: "create anan user upload dir  {{ anon_upload_root }}"
+  file:
+    path: "{{ anon_upload_root }}"
+    state: directory
+    mode: 0777
+
+- name: config SElinux allow anonymous write
+  seboolean:
+    name: ftpd_anon_write
+    state: yes
+    persistent: yes
+
+- name: manage selinux settings
+  sefcontext:
+    target: "{{ item.0 }}"
+    setype: public_content_rw_t
+    state: present
+  with_nested:
+     - "{{ anon_upload_root }}"
+     - "{{ anon_root }}"
+  notify:
+    - run restorecon
+

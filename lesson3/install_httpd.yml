@@ -1,0 +1,6 @@
+---
+- name: Install  httpd  service
+  hosts: nodes
+
+  roles:
+    - install_httpd

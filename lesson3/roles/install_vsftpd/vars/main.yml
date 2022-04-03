@@ -1,0 +1,15 @@
+---
+listen: 'YES'
+anonymous_enable: 'YES'
+no_anon_password: 'YES'
+anon_upload_enable: 'YES'
+anon_mkdir_write_enable: 'YES'
+anon_other_write_enable: 'YES'
+chroot_local_user: 'NO'
+chroot_list_enable: 'NO'
+write_enable: 'YES'
+connect_from_port_20: 'YES'
+
+anon_root: /var/ftp/pub
+anon_upload_root: /var/ftp/pub/upload
+

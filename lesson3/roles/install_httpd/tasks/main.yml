@@ -1,0 +1,40 @@
+---
+- name: install httpd package
+  yum: 
+    name: httpd
+    state: latest
+
+- name: create the index.html file in /var/www/html/
+  template:
+    src: index.j2
+    dest: '{{ dest_dir }}/index.html'
+    
+
+- name: start and enable the Apache webserver
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: install firewalld
+  yum:
+    name: firewalld
+    state: latest
+
+- name: open the firewall http service
+  firewalld:
+    service: http
+    state: enabled
+    permanent: yes
+    immediate: yes
+  notify: 
+    - restart firewalld
+
+- name: open the firewall https service
+  firewalld:
+    service: https
+    state: enabled
+    permanent: yes
+    immediate: yes
+  notify:
+    - restart firewalld

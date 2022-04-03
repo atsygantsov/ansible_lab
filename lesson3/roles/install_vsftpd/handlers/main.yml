@@ -1,0 +1,16 @@
+---
+# handlers file for install vsftpd
+
+
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+
+- name: run restorecon
+  command: restorecon -vR /var/ftp/pub

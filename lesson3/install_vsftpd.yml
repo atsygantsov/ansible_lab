@@ -1,0 +1,6 @@
+---
+- name: Install vsftpd service
+  hosts: nodes
+
+  roles:
+    - install_vsftpd
